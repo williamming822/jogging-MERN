@@ -1,25 +1,64 @@
+const { User } = require('../models/user');
+const { ROLES } = require('../constants');
 function list(req, res, next) {
-  next();
+  let where = {};
+  if (req.user.role === ROLES.MANAGER) {
+    where = { role: { $ne: ROLES.ADMIN } };
+  }
+
+  User.find(where)
+  .then((users) => {
+    res.json(users);
+  })
+  .catch(next);
 }
 
 function create(req, res, next) {
-  next();
+  const { firstName, lastName, email, password } = req.body;
+  const user = new User({firstName, lastName, email, passowrd});
+
+  if (req.user.role === ROLES.ADMIN && req.body.role) {
+    user.role = req.body.role;
+  }
+
+  user.save()
+  .then((savedUser) => {
+    res.json(savedUser);
+  })
+  .catch(next);
 }
 
 function read(req, res, next) {
+  res.json(req.foundUser);
   next();
 }
 
 function update(req, res, next) {
-  next();
+  const updatedUser = {...req.foundUser, ...req.body};
+  updatedUser.save()
+  .then((user) => {
+    res.json(user);
+  })
+  .catch(next);
 }
 
 function remove(req, res, next) {
-  next();
+  req.foundUser.remove(() => {
+    req.json(req.foundUser);
+  })
+  .catch(next);
 }
 
 function getUserById(req, res, next, id) {
-  next(id);
+  User.findOne(id)
+  .then((user) => {
+    if (!user) {
+      res.status(404).json({ message: 'User Not Found' });
+    }
+    req.foundUser = user;
+    next();
+  })
+  .catch(next);
 }
 
 module.exports = {

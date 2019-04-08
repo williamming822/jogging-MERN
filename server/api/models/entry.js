@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose.Schema;
-const isPositive = require('./validators');
+const { Schema } = mongoose;
+const { isPositive } = require('./validators');
 const { User } = require('./user');
 
 const entrySchema = new Schema({
@@ -29,9 +29,8 @@ const entrySchema = new Schema({
   date: {
     type: Date,
     default: Date.now(),
-  },
-  timestamp: true,
-});
+  }
+}, {timestamps: true});
 
 const Entry = mongoose.model('Entry', entrySchema);
 module.exports = {

@@ -24,7 +24,7 @@ function login(req, res, next) {
         .catch(err =>
           res
             .status(401)
-            .send({ message: `User authentication failed${err.message}` }),
+            .json({ message: `User authentication failed${err.message}` }),
         );
     })
     .catch(next);
