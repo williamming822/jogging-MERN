@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
+const { router } = require('../api/routes');
 
 module.exports = function backendMiddleware(app) {
   dotenv.config();
@@ -34,4 +35,5 @@ module.exports = function backendMiddleware(app) {
       }
     },
   );
+  app.use('/api', router);
 };

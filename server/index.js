@@ -6,6 +6,7 @@ const logger = require('./logger');
 const argv = require('./argv');
 const port = require('./port');
 const setup = require('./middlewares/frontendMiddleware');
+const setupBackend = require('./middlewares/backendMiddleware');
 const isDev = process.env.NODE_ENV !== 'production';
 const ngrok =
   (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel
@@ -23,6 +24,7 @@ setup(app, {
   publicPath: '/',
 });
 
+setupBackend(app);
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host
@@ -38,6 +40,7 @@ app.get('*.js', (req, res, next) => {
 // Start your app.
 app.listen(port, host, async err => {
   if (err) {
+    logger.error('some error has occured');
     return logger.error(err.message);
   }
 
