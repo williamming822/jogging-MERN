@@ -1,4 +1,6 @@
 const express = require('express');
+const { ROLES } = require('../constants');
+const { hasAuthority } = require('../middlewares/hasAutority');
 const {
   list,
   create,
@@ -9,7 +11,7 @@ const {
 } = require('../controllers/user.controller');
 
 const router = express.Router();
-
+router.use(hasAuthority([ROLES.ADMIN, ROLES.USER]));
 router
   .route('/')
   .get(list)
