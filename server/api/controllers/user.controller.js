@@ -7,25 +7,26 @@ function list(req, res, next) {
   }
 
   User.find(where)
-  .then((users) => {
-    res.json(users);
-  })
-  .catch(next);
+    .then(users => {
+      res.json(users);
+    })
+    .catch(next);
 }
 
 function create(req, res, next) {
   const { firstName, lastName, email, password } = req.body;
-  const user = new User({firstName, lastName, email, passowrd});
+  const user = new User({ firstName, lastName, email, password });
 
   if (req.user.role === ROLES.ADMIN && req.body.role) {
     user.role = req.body.role;
   }
 
-  user.save()
-  .then((savedUser) => {
-    res.json(savedUser);
-  })
-  .catch(next);
+  user
+    .save()
+    .then(savedUser => {
+      res.json(savedUser);
+    })
+    .catch(next);
 }
 
 function read(req, res, next) {
@@ -34,31 +35,33 @@ function read(req, res, next) {
 }
 
 function update(req, res, next) {
-  const updatedUser = {...req.foundUser, ...req.body};
-  updatedUser.save()
-  .then((user) => {
-    res.json(user);
-  })
-  .catch(next);
+  const updatedUser = { ...req.foundUser, ...req.body };
+  updatedUser
+    .save()
+    .then(user => {
+      res.json(user);
+    })
+    .catch(next);
 }
 
 function remove(req, res, next) {
-  req.foundUser.remove(() => {
-    req.json(req.foundUser);
-  })
-  .catch(next);
+  req.foundUser
+    .remove(() => {
+      req.json(req.foundUser);
+    })
+    .catch(next);
 }
 
 function getUserById(req, res, next, id) {
   User.findOne(id)
-  .then((user) => {
-    if (!user) {
-      res.status(404).json({ message: 'User Not Found' });
-    }
-    req.foundUser = user;
-    next();
-  })
-  .catch(next);
+    .then(user => {
+      if (!user) {
+        res.status(404).json({ message: 'User Not Found' });
+      }
+      req.foundUser = user;
+      next();
+    })
+    .catch(next);
 }
 
 module.exports = {

@@ -3,34 +3,37 @@ const { Schema } = mongoose;
 const { isPositive } = require('./validators');
 const { User } = require('./user');
 
-const entrySchema = new Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: User,
-  },
-  distance: {
-    type: Number,
-    validate: {
-      validator: isPositive,
-      message: props => `${props.value} should be greater than zero`,
+const entrySchema = new Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: User,
     },
-    default: 0,
-    required: [true, 'distance is required'],
-  },
-  duration: {
-    type: Number,
-    validate: {
-      validator: isPositive,
-      message: props => `${props.value} should be greater than zero`,
+    distance: {
+      type: Number,
+      validate: {
+        validator: isPositive,
+        message: props => `${props.value} should be greater than zero`,
+      },
+      default: 0,
+      required: [true, 'distance is required'],
     },
-    default: 0,
-    required: [true, 'duration is required'],
+    duration: {
+      type: Number,
+      validate: {
+        validator: isPositive,
+        message: props => `${props.value} should be greater than zero`,
+      },
+      default: 0,
+      required: [true, 'duration is required'],
+    },
+    date: {
+      type: Date,
+      default: Date.now(),
+    },
   },
-  date: {
-    type: Date,
-    default: Date.now(),
-  }
-}, {timestamps: true});
+  { timestamps: true },
+);
 
 const Entry = mongoose.model('Entry', entrySchema);
 module.exports = {

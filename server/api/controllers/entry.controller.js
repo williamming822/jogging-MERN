@@ -1,64 +1,77 @@
 const { Entry } = require('../models/entry');
 const { ROLES } = require('../constants');
+
 function list(req, res, next) {
   let where = {};
   if (req.user.role === ROLES.USER) {
-    where = {user: req.user._id};
+    /* eslint no-underscore-dangle: ["error", { "allow": ["foo_", "_bar"] }] */
+    where = { user: req.user._id };
   }
 
   Entry.find(where)
-  .populate('user')
-  .then((entries) => {
-    res.json(entries);
-  })
-  .catch(next);
+    .populate('user')
+    .then(entries => {
+      res.json(entries);
+    })
+    .catch(next);
 }
 
-function read(req, res, next) {
+function read(req, res) {
   return res.json(req.entry);
 }
 
 function create(req, res, next) {
   const entry = new Entry(req.body);
+  /* eslint no-underscore-dangle: ["error", { "allow": ["foo_", "_bar"] }] */
   entry.user = req.user._id;
 
-  entry.save()
-  .then((newEntry) => {
-    res.json(newEntry);
-  })
-  .catch(next);
+  entry
+    .save()
+    .then(newEntry => {
+      res.json(newEntry);
+    })
+    .catch(next);
 }
 
 function update(req, res, next) {
   Object.assign(req.entry, req.body);
 
-  req.entry.save()
-  .then((updatedEntry) => {
-    res.json(updatedEntry);
-  })
-  .catch(next);
+  req.entry
+    .save()
+    .then(updatedEntry => {
+      res.json(updatedEntry);
+    })
+    .catch(next);
 }
 
 function remove(req, res, next) {
-  req.entry.remove(() => {
-    res.json(req.entry);
-  })
-  .catch(next);
+  req.entry
+    .remove(() => {
+      res.json(req.entry);
+    })
+    .catch(next);
 }
 
 function getEntryById(req, res, next, id) {
   Entry.findById(id)
-  .then(entry => {
-    if (!entry) {
-      res.status(404).json({ message: 'Not found such entry'});
-    }
-    if (req.user._id && req.user._id.toString() !== entry.user.toString() && req.user.role !== ROLES.ADMIN) {
-      res.status(401).json({ message: 'You are not allowed to access this entry'});
-    }
-    req.entry = entry;
-    next();
-  })
-  .catch(next);
+    .then(entry => {
+      if (!entry) {
+        res.status(404).json({ message: 'Not found such entry' });
+      }
+      if (
+        /* eslint no-underscore-dangle: ["error", { "allow": ["foo_", "_bar"] }] */
+        req.user._id &&
+        req.user._id.toString() !== entry.user.toString() &&
+        req.user.role !== ROLES.ADMIN
+      ) {
+        res
+          .status(401)
+          .json({ message: 'You are not allowed to access this entry' });
+      }
+      req.entry = entry;
+      next();
+    })
+    .catch(next);
 }
 
 module.exports = {
