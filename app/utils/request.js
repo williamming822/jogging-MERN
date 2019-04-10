@@ -37,7 +37,23 @@ function checkStatus(response) {
  *
  * @return {object}           The response data
  */
-export default function request(url, options) {
+export default function request(
+  url,
+  method = 'GET',
+  body = null,
+  hasToken = false,
+) {
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+  const options = { headers, method };
+  if (body) {
+    options.body = JSON.stringify(body);
+  }
+  if (hasToken) {
+    // do something related to token
+  }
+
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON);
