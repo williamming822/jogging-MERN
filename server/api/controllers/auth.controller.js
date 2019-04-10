@@ -1,13 +1,15 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/user');
+const { JWT_SECRET } = require('../config');
 
 function login(req, res, next) {
-  User.findOne({ email: req.user.email })
+  console.log("req.body", req.body);
+  User.findOne({ email: req.body.email })
     .select('_id password email firstName lastName role')
     .exec()
     .then(user => {
       user
-        .authentiate(req.user.password)
+        .authenticate(req.body.password)
         .then(() => {
           const jwtSign = jwt.sign(
             {
@@ -16,7 +18,7 @@ function login(req, res, next) {
               role: user.role,
               email: user.email,
             },
-            'secret',
+            JWT_SECRET,
             { expiresIn: '1h' },
           );
           return res.json(jwtSign);
@@ -32,13 +34,13 @@ function login(req, res, next) {
 
 function signup(req, res, next) {
   const user = new User({
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-    email: req.user.email,
-    password: req.user.password,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    password: req.body.password,
   });
 
-  user.save(newUser => res.json(newUser)).catch(next);
+  user.save().then(newUser => res.json(newUser)).catch(next);
 }
 
 module.exports = {

@@ -8,28 +8,28 @@ const userSchema = new Schema(
   {
     firstName: {
       type: String,
-      required: [true, 'FirstName is required'],
+      required: [true, 'FirstName is required']
     },
     lastName: {
       type: String,
-      required: [true, 'LastName is required'],
+      required: [true, 'LastName is required']
     },
     email: {
       type: String,
       required: true,
-      unique: [true, 'Unique email is required'],
+      unique: true
     },
     password: {
       type: String,
-      required: [true, 'Password is required'],
+      required: [true, 'Password is required']
     },
     role: {
       type: String,
       enum: [ROLES.ADMIN, ROLES.MANAGER, ROLES.USER],
-      default: ROLES.USER,
+      default: ROLES.USER
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 userSchema.methods.hashPassword = function hashPassword(password) {
@@ -43,7 +43,7 @@ userSchema.methods.hashPassword = function hashPassword(password) {
   });
 };
 
-userSchema.methods.authentiate = async function authenticate(password) {
+userSchema.methods.authenticate = async function authenticate(password) {
   const match = await bcrypt.compare(password, this.password);
   return match;
 };

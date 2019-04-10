@@ -5,8 +5,8 @@ import Signup from './signup';
 
 const AuthRouter = () => (
   <Switch>
-    <Route path="/" exact component={Login} />
-    <Route path="/signup" component={Signup} />
+    <Route exact path="/login" component={Login} />
+    <Route exact path="/signup" component={Signup} />
   </Switch>
 );
 

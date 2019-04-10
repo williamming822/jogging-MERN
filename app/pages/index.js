@@ -11,7 +11,7 @@ class Apps extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/" exact component={AuthRouter} />
+        <Route path="/" component={AuthRouter} />
       </Switch>
     );
   }

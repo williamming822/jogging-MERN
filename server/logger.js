@@ -14,6 +14,9 @@ const logger = {
     console.error(chalk.red(err));
   },
 
+  inform: message => {
+    console.log(chalk.green(message));
+  },
   // Called when express.js app starts on given port w/o errors
   appStarted: (port, host, tunnelStarted) => {
     console.log(`Server started ! ${chalk.green('✓')}`);

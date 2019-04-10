@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const { router } = require('../api/routes');
+const logger = require('../logger');
 
 module.exports = function backendMiddleware(app) {
   dotenv.config();
@@ -31,7 +32,10 @@ module.exports = function backendMiddleware(app) {
     options,
     err => {
       if (err) {
-        // console.log('some errors have occured in connecting to mongodb');
+        logger.error('some errors have occured in connecting to mongodb');
+      }
+      else {
+        logger.inform(`The server has been connected to db server: ${uri}`);
       }
     },
   );

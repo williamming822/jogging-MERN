@@ -2,6 +2,7 @@ import React from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import { Link, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import Avatar from '@material-ui/core/Avatar';
@@ -87,6 +88,16 @@ function Login(props) {
             Login
           </Button>
         </form>
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          component={Link}
+          className={classes.submit}
+          to="/signup"
+        >
+          Signup
+        </Button>
       </Paper>
     </main>
   );
@@ -144,6 +155,7 @@ const withMyFormik = withFormik({
 
 export default compose(
   withConnect,
+  withRouter,
   withStyles(styles),
   withMyFormik,
 )(Login);

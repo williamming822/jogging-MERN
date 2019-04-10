@@ -22,7 +22,7 @@ export default handleActions(
     },
     [USER_LOGIN_SUCCESS]: (state, action) =>
       state
-        .set('userData', action.userData)
+        .set('userData', action.data)
         .set('loading', false)
         .set('currentUser', action.username),
     [USER_LOGIN_FAIL]: (state, action) =>
