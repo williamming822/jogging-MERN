@@ -13,8 +13,15 @@ import TableCell from '@material-ui/core/TableCell';
 import TableFooter from '@material-ui/core/TableFooter';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Icon from '@material-ui/core/Icon';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Pagination from 'components/pagination';
+import Modal from 'components/Modal';
 import { styles } from './styles';
 /* import selectors and actions*/
 import {
@@ -29,6 +36,9 @@ class UserList extends React.Component {
   state = {
     page: 0,
     rowsPerPage: 5,
+    isConfirm: false,
+    showConfirm: false,
+    deleteId: null,
   };
 
   componentWillMount() {
@@ -43,15 +53,30 @@ class UserList extends React.Component {
     this.setState({ page: 0, rowsPerPage: event.target.value });
   };
 
+  handleConfirm = () => {
+    console.log("user is deleted");
+    this.setState({showConfirm: false})
+  }
+  handleCancel = () => {
+    this.setState({showConfirm: false});
+  }
+  handleRemove = (deleteId) => () => {
+    this.setState({deleteId, showConfirm: true});
+  }
   render() {
     const { classes, userList, isListLoading } = this.props;
-    console.log("Props of UserList +++++++++++++", this.props);
-    const { rowsPerPage, page } = this.state;
+    const { rowsPerPage, page, showConfirm } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, userList.size - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
+        <Modal
+          isOpen={showConfirm}
+          content={"Are you sure to delete this user?"}
+          handleConfirm={this.handleConfirm}
+          handleCancel={this.handleCancel}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
             <TableHead>
@@ -60,6 +85,7 @@ class UserList extends React.Component {
                 <TableCell align="right">LastName</TableCell>
                 <TableCell align="right">Email</TableCell>
                 <TableCell align="right">Role</TableCell>
+                <TableCell align="center">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -73,6 +99,14 @@ class UserList extends React.Component {
                     <TableCell align="right">{user.get('lastName')}</TableCell>
                     <TableCell align="right">{user.get('email')}</TableCell>
                     <TableCell align="right">{user.get('role')}</TableCell>
+                    <TableCell align="center">
+                      <Fab color="primary" aria-label="Edit" className={classes.fab}>
+                        <Icon>edit_icon</Icon>
+                      </Fab>
+                      <Fab color="secondary" aria-label="Edit" onClick={this.handleRemove(user.get('_id'))} className={classes.fab}>
+                        <DeleteIcon />
+                      </Fab>
+                    </TableCell>
                   </TableRow>
                 ))}
               {emptyRows > 0 && (
@@ -95,9 +129,11 @@ class UserList extends React.Component {
                 onChangePage={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
+              <Fab color="primary" aria-label="Add" className={classes.fab}>
+                <AddIcon />
+              </Fab>
               </TableRow>
             </TableFooter>
-
           </Table>
         </div>
       </Paper>
