@@ -6,7 +6,7 @@ import { combineReducers } from 'redux-immutable';
 import { connectRouter } from 'connected-react-router/immutable';
 
 import history from 'utils/history';
-import globalReducer from 'containers/App/reducer';
+import globalReducer from 'pages/redux/reducer';
 import languageProviderReducer from 'containers/LanguageProvider/reducer';
 
 /**

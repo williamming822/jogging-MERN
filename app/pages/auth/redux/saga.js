@@ -9,9 +9,8 @@ export function* userLoginRequest(action) {
     email: action.payload.email,
     password: action.payload.password,
   };
-  const requestURL = `api/auth/login`;
   try {
-    const data = yield call(request, requestURL, 'POST', body);
+    const data = yield call(request, 'auth/login', 'POST', body);
     console.log("user data after login", data);
     yield put(userLoginSuccess(data));
   } catch (err) {
@@ -26,9 +25,8 @@ export function* userSignupRequest(action) {
     firstName: action.payload.firstname,
     lastName: action.payload.lastname,
   };
-  const requestURL = `api/auth/signup`;
   try {
-    const data = yield call(request, requestURL, 'POST', body);
+    const data = yield call(request, 'signup', 'POST', body);
     if (data) {
       console.log("user data after signup", data);
       history.replace('/login');

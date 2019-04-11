@@ -19,12 +19,13 @@ const app = express();
 // app.use('/api', myApi);
 
 // In production we need to pass these values in instead of relying on webpack
+setupBackend(app);
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
   publicPath: '/',
 });
 
-setupBackend(app);
+
 // get the intended host and port number, use localhost and port 3000 if not provided
 const customHost = argv.host || process.env.HOST;
 const host = customHost || null; // Let http.Server use its default IPv6/4 host

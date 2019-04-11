@@ -1,6 +1,8 @@
 const { User } = require('../models/user');
 const { ROLES } = require('../constants');
+
 function list(req, res, next) {
+  console.log("user list controller", req);
   let where = {};
   if (req.user.role === ROLES.MANAGER) {
     where = { role: { $ne: ROLES.ADMIN } };

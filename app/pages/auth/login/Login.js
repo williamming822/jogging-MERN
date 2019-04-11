@@ -105,7 +105,6 @@ function Login(props) {
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
-  error: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
   values: PropTypes.object.isRequired,
   handleBlur: PropTypes.func.isRequired,
@@ -114,7 +113,6 @@ Login.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  error: makeSelectError(),
 });
 const mapDispatchToProps = {
   userLogin,

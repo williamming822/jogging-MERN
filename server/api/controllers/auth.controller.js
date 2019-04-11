@@ -3,6 +3,7 @@ const { User } = require('../models/user');
 const { JWT_SECRET } = require('../config');
 
 function login(req, res, next) {
+  console.log("user login controller", req.body);
   User.findOne({ email: req.body.email })
     .select('_id password email firstName lastName role')
     .exec()

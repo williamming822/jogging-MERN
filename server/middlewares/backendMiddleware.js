@@ -39,5 +39,6 @@ module.exports = function backendMiddleware(app) {
       }
     },
   );
+  console.log("backend middleware");
   app.use('/api', router);
 };

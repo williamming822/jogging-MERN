@@ -10,6 +10,7 @@ const makeSelectUserData = () =>
 
 const makeSelectError = () =>
   createSelector(selectAuth, userState => userState.get('error'));
+
 export {
   selectAuth,
   makeSelectCurrentUser,

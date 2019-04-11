@@ -11,6 +11,11 @@ import createReducer from './reducers';
 
 const sagaMiddleware = createSagaMiddleware();
 
+let storeObj = null;
+export function getStore() {
+  return storeObj;
+}
+
 export default function configureStore(initialState = {}, history) {
   // Create the store with two middlewares
   // 1. sagaMiddleware: Makes redux-sagas work
@@ -51,6 +56,6 @@ export default function configureStore(initialState = {}, history) {
       store.replaceReducer(createReducer(store.injectedReducers));
     });
   }
-
+  storeObj = store;
   return store;
 }

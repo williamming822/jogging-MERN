@@ -133,7 +133,6 @@ function Signup(props) {
 
 Signup.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
   values: PropTypes.object.isRequired,
@@ -143,7 +142,6 @@ Signup.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: makeSelectCurrentUser(),
   error: makeSelectError(),
 });
 const mapDispatchToProps = {
