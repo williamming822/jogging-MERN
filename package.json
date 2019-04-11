@@ -95,6 +95,7 @@
     "redux-actions": "^2.6.5",
     "redux-auth-wrapper": "^2.1.0",
     "redux-immutable": "4.0.0",
+    "redux-persist-immutable": "^4.3.1",
     "redux-saga": "0.16.2",
     "reselect": "4.0.0",
     "sanitize.css": "4.1.0",

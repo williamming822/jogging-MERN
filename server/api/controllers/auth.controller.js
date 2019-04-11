@@ -3,11 +3,11 @@ const { User } = require('../models/user');
 const { JWT_SECRET } = require('../config');
 
 function login(req, res, next) {
-  console.log("req.body", req.body);
   User.findOne({ email: req.body.email })
     .select('_id password email firstName lastName role')
     .exec()
     .then(user => {
+      console.log(user);
       user
         .authenticate(req.body.password)
         .then(() => {
@@ -21,7 +21,13 @@ function login(req, res, next) {
             JWT_SECRET,
             { expiresIn: '1h' },
           );
-          return res.json(jwtSign);
+          return res.json({
+            firstname: user.firstName,
+            lastname: user.lastName,
+            email: user.email,
+            role: user.role,
+            token: jwtSign,
+          });
         })
         .catch(err =>
           res

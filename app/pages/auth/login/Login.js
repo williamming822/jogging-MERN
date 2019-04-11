@@ -20,7 +20,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import styles from './styles';
 
 import { userLogin } from '../redux/actions';
-import { makeSelectCurrentUser, makeSelectError } from '../redux/selectors';
+import { makeSelectError } from '../redux/selectors';
 
 function Login(props) {
   const {
@@ -32,7 +32,7 @@ function Login(props) {
     handleSubmit,
     classes,
   } = props;
-  console.log(props);
+
   return (
     <main className={classes.main}>
       <CssBaseline />
@@ -105,7 +105,6 @@ function Login(props) {
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
-  user: PropTypes.string.isRequired,
   error: PropTypes.bool.isRequired,
   errors: PropTypes.object.isRequired,
   values: PropTypes.object.isRequired,
@@ -115,7 +114,6 @@ Login.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  user: makeSelectCurrentUser(),
   error: makeSelectError(),
 });
 const mapDispatchToProps = {

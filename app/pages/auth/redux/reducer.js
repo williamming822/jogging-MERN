@@ -1,32 +1,27 @@
 import { fromJS } from 'immutable';
 import { handleActions } from 'redux-actions';
 import { USER_LOGIN, USER_LOGIN_FAIL, USER_LOGIN_SUCCESS } from './constants';
+import { userLogin, userLoginSuccess } from './actions';
 
 const defaultState = fromJS({
   loading: false,
   error: false,
-  currentUser: '',
-  userData: {},
+  currentUser: {},
 });
 
-console.log('this is the type of default state', typeof defaultState);
-
-export default handleActions(
+const reducer = handleActions(
   {
     [USER_LOGIN]: state => {
-      return;
-      state
+      return state
         .set('loading', true)
-        .set('error', false)
-        .set('userData', null);
+        .set('error', false);
     },
-    [USER_LOGIN_SUCCESS]: (state, action) =>
-      state
-        .set('userData', action.data)
-        .set('loading', false)
-        .set('currentUser', action.username),
+    [USER_LOGIN_SUCCESS]: (state, {payload}) =>
+      state.set('loading', false).set('currentUser', fromJS(payload)),
     [USER_LOGIN_FAIL]: (state, action) =>
       state.set('error', action.error).set('loading', false),
   },
   defaultState,
 );
+
+export default reducer;
