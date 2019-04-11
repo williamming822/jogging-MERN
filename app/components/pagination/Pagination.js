@@ -46,14 +46,22 @@ class TablePaginationActions extends React.Component {
           disabled={page === 0}
           aria-label="Previous Page"
         >
-          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowRight />
+          ) : (
+            <KeyboardArrowLeft />
+          )}
         </IconButton>
         <IconButton
           onClick={this.handleNextButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="Next Page"
         >
-          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+          {theme.direction === 'rtl' ? (
+            <KeyboardArrowLeft />
+          ) : (
+            <KeyboardArrowRight />
+          )}
         </IconButton>
         <IconButton
           onClick={this.handleLastPageButtonClick}
@@ -76,16 +84,14 @@ TablePaginationActions.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-const TablePaginationActionsWrapped = withStyles(actionsStyles, { withTheme: true })(
-  TablePaginationActions,
+const TablePaginationActionsWrapped = withStyles(actionsStyles, {
+  withTheme: true,
+})(TablePaginationActions);
+const Pagination = props => (
+  <TablePagination
+    {...props}
+    ActionsComponent={TablePaginationActionsWrapped}
+  />
 );
-const Pagination = (props) => {
-  return (
-    <TablePagination
-      {...props}
-      ActionsComponent={TablePaginationActionsWrapped}
-    />
-  )
-}
 
 export default Pagination;
