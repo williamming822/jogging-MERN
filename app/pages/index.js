@@ -14,7 +14,7 @@ class Apps extends Component {
   render() {
     return (
       <Switch>
-        <Route path="/" component={AuthRouter} />
+        <Route exact path="/" component={AuthRouter} />
         <Route path="/users" component={UserList} />
       </Switch>
     );
