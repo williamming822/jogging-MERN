@@ -8,10 +8,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
 
-//this is the good example of HOOKs of react !!!
+// this is the good example of HOOKs of react !!!
 function Modal(props) {
-  const { fullScreen,  content, handleConfirm, handleCancel, isOpen } = props;
-
+  const { fullScreen, content, handleConfirm, handleCancel, isOpen } = props;
 
   return (
     <div>
@@ -23,9 +22,7 @@ function Modal(props) {
       >
         <DialogTitle id="responsive-dialog-title">{content}</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {content}
-          </DialogContentText>
+          <DialogContentText>{content}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancel} color="primary">

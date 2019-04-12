@@ -2,7 +2,6 @@ const { User } = require('../models/user');
 const { ROLES } = require('../constants');
 
 function list(req, res, next) {
-  console.log("user list controller", req);
   let where = {};
   if (req.user.role === ROLES.MANAGER) {
     where = { role: { $ne: ROLES.ADMIN } };
@@ -33,7 +32,6 @@ function create(req, res, next) {
 
 function read(req, res, next) {
   res.json(req.foundUser);
-  next();
 }
 
 function update(req, res, next) {
@@ -48,17 +46,19 @@ function update(req, res, next) {
 
 function remove(req, res, next) {
   req.foundUser
-    .remove(() => {
-      req.json(req.foundUser);
+    .remove()
+    .then(() => {
+      res.json(req.foundUser);
     })
     .catch(next);
 }
 
 function getUserById(req, res, next, id) {
-  User.findOne(id)
+  User.findById(id)
     .then(user => {
       if (!user) {
         res.status(404).json({ message: 'User Not Found' });
+        return;
       }
       req.foundUser = user;
       next();

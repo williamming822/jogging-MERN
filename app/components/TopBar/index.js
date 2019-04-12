@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { Link } from 'react-router-dom';
 import { userLogout } from 'pages/auth/redux/actions';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -47,7 +48,7 @@ class TopBar extends React.Component {
             <Typography variant="h6" color="inherit" className={classes.grow}>
               Jogging Track
             </Typography>
-            <Button color="inherit" onClick={logOut}>LOGOUT</Button>
+            <Button color="inherit" component={Link} to="/users">USERS</Button>
             <div>
               <Button
                 buttonRef={node => {
@@ -58,7 +59,7 @@ class TopBar extends React.Component {
                 color="inherit"
                 onClick={this.handleToggle}
               >
-                USERS
+                ENTRIES
               </Button>
               <Popper open={open} anchorEl={this.anchorEl} transition disablePortal>
                 {({ TransitionProps, placement }) => (
@@ -70,8 +71,8 @@ class TopBar extends React.Component {
                     <Paper>
                       <ClickAwayListener onClickAway={this.handleClose}>
                         <MenuList>
-                          <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                          <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                          <MenuItem component={Link} to="/report" onClick={this.handleClose}>Weekly Report</MenuItem>
+                          <MenuItem component={Link} to="/entries" onClick={this.handleClose}>Entries</MenuItem>
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>
@@ -79,6 +80,7 @@ class TopBar extends React.Component {
                 )}
               </Popper>
             </div>
+            <Button color="inherit" onClick={logOut}>LOGOUT</Button>
           </Toolbar>
         </AppBar>
       </div>

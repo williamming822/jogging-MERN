@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 /* HOCs from libraries */
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router-dom';
 import { createStructuredSelector } from 'reselect';
 /* material ui components imports */
 import { withStyles } from '@material-ui/core/styles';
@@ -23,14 +24,14 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Pagination from 'components/pagination';
 import Modal from 'components/Modal';
 import { styles } from './styles';
-/* import selectors and actions*/
+/* import selectors and actions */
 import {
   makeSelectUserList,
   makeSelectUserListLoading,
   makeSelectUser,
-  makeSelectUserLoading
+  makeSelectUserLoading,
 } from '../redux/selectors';
-import { getUsers } from '../redux/actions';
+import { getUsers, deleteUser } from '../redux/actions';
 
 class UserList extends React.Component {
   state = {
@@ -54,15 +55,19 @@ class UserList extends React.Component {
   };
 
   handleConfirm = () => {
-    console.log("user is deleted");
-    this.setState({showConfirm: false})
-  }
+    this.props.deleteUser({id: this.state.deleteId});
+    this.setState({ showConfirm: false });
+
+  };
+
   handleCancel = () => {
-    this.setState({showConfirm: false});
-  }
-  handleRemove = (deleteId) => () => {
-    this.setState({deleteId, showConfirm: true});
-  }
+    this.setState({ showConfirm: false });
+  };
+
+  handleRemove = deleteId => () => {
+    this.setState({ deleteId, showConfirm: true });
+  };
+
   render() {
     const { classes, userList, isListLoading } = this.props;
     const { rowsPerPage, page, showConfirm } = this.state;
@@ -73,7 +78,7 @@ class UserList extends React.Component {
       <Paper className={classes.root}>
         <Modal
           isOpen={showConfirm}
-          content={"Are you sure to delete this user?"}
+          content="Are you sure to delete this user?"
           handleConfirm={this.handleConfirm}
           handleCancel={this.handleCancel}
         />
@@ -100,10 +105,21 @@ class UserList extends React.Component {
                     <TableCell align="right">{user.get('email')}</TableCell>
                     <TableCell align="right">{user.get('role')}</TableCell>
                     <TableCell align="center">
-                      <Fab color="primary" aria-label="Edit" className={classes.fab}>
+                      <Fab
+                        color="primary"
+                        aria-label="Edit"
+                        className={classes.fab}
+                        component={Link}
+                        to={`/users/${user.get('_id')}`}
+                      >
                         <Icon>edit_icon</Icon>
                       </Fab>
-                      <Fab color="secondary" aria-label="Edit" onClick={this.handleRemove(user.get('_id'))} className={classes.fab}>
+                      <Fab
+                        color="secondary"
+                        aria-label="Edit"
+                        onClick={this.handleRemove(user.get('_id'))}
+                        className={classes.fab}
+                      >
                         <DeleteIcon />
                       </Fab>
                     </TableCell>
@@ -117,21 +133,21 @@ class UserList extends React.Component {
             </TableBody>
             <TableFooter>
               <TableRow>
-              <Pagination
-                rowsPerPageOptions={[5, 10, 25]}
-                colSpan={3}
-                count={userList.size}
-                rowsPerPage={+rowsPerPage}
-                page={page}
-                SelectProps={{
-                  native: true,
-                }}
-                onChangePage={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              />
-              <Fab color="primary" aria-label="Add" className={classes.fab}>
-                <AddIcon />
-              </Fab>
+                <Pagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  colSpan={3}
+                  count={userList.size}
+                  rowsPerPage={+rowsPerPage}
+                  page={page}
+                  SelectProps={{
+                    native: true,
+                  }}
+                  onChangePage={this.handleChangePage}
+                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                />
+                <Fab color="primary" aria-label="Add" component={Link} to={`/users/new`} className={classes.fab}>
+                  <AddIcon />
+                </Fab>
               </TableRow>
             </TableFooter>
           </Table>
@@ -152,12 +168,16 @@ const mapStateToProps = createStructuredSelector({
   isUserLoading: makeSelectUserLoading(),
 });
 const mapDispatchToProps = {
-  getUsers: getUsers,
-}
+  getUsers,
+  deleteUser,
+};
 
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
 
-export default compose(
+export default withRouter(compose(
   withConnect,
   withStyles(styles),
-)(UserList);
+)(UserList));

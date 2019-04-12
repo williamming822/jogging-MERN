@@ -15,12 +15,6 @@ router.use(hasAuthority([ROLES.ADMIN, ROLES.USER]));
 
 router
   .route('/')
-  .all(function(req, res, next) {
-    // runs for all HTTP verbs first
-    // think of it as route specific middleware!
-    console.log("Here is all of the router+++++++");
-    next();
-  })
   .get(list)
   .post(create);
 

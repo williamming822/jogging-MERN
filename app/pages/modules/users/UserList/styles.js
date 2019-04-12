@@ -22,9 +22,9 @@ export const styles = theme => ({
     fontSize: 20,
   },
   fab: {
-     margin: theme.spacing.unit,
-   },
-   extendedIcon: {
-     marginRight: theme.spacing.unit,
-   },
+    margin: theme.spacing.unit,
+  },
+  extendedIcon: {
+    marginRight: theme.spacing.unit,
+  },
 });

@@ -5,8 +5,6 @@ const { router } = require('../api/routes');
 const logger = require('../logger');
 
 module.exports = function backendMiddleware(app) {
-  dotenv.config();
-  app.use(bodyParser.json());
   const options = {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -39,6 +37,7 @@ module.exports = function backendMiddleware(app) {
       }
     },
   );
-  console.log("backend middleware");
+  app.use(bodyParser.json({ limit: '20mb' }));
+  app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
   app.use('/api', router);
 };
